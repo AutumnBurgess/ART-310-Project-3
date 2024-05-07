@@ -33,7 +33,6 @@ function area_worldMap() {
     });
 
     worldMap.setView([BOUND_X / 2, BOUND_Y / 2], 1);
-    worldMap.setMaxBounds(BOUNDS);
     L.imageOverlay('project3/assets/body0.png', BOUNDS).addTo(worldMap);
   }
 

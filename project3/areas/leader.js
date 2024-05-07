@@ -17,29 +17,39 @@ function area_together() {
         for (const mapA of maps) {
             centerMap.sync(mapA);
         }
-        makePolygon(BOUND_X / 2, BOUND_Y / 2, 90, 4).addTo(centerMap);
-        makePolygon(BOUND_X / 3, BOUND_Y / 3, 90, 5).addTo(maps[0]);
-        makePolygon(2 * (BOUND_X / 3), 2 * (BOUND_Y / 3), 90, 6).addTo(maps[1]);
-        remainingMarkers = maps.length + 1;
+        makePolygon(BOUND_X / 2, BOUND_Y / 2, 90, 4, '#f00', '#f03').addTo(centerMap);
+        makePolygon(BOUND_X / 3, BOUND_Y / 3, 90, 5, '#0f0', '#3f0').addTo(maps[0]);
+        makePolygon(2 * (BOUND_X / 3), 2 * (BOUND_Y / 3), 90, 6, '#00f', '#30f').addTo(maps[1]);
+        remainingMarkers = 9;
     }
 
     function makeMap(id, isCenter) {
         let name = 'holeMap' + id;
         let newMap = L.map(name, {
             crs: L.CRS.Simple,
-            maxZoom: 2,
-            minZoom: 1,
+            maxZoom: 1.8,
+            minZoom: 1.8,
             zoomControl: isCenter,
             attributionControl: false
         });
-        newMap.setView([BOUND_X / 2, BOUND_Y / 2], 1);
+        newMarker(newMap);
+        newMarker(newMap);
+        newMarker(newMap);
+        newMap.setView([BOUND_X / 2, BOUND_Y / 2], 1.8);
         newMap.setMaxBounds(BOUNDS);
+        return newMap;
+    }
+
+    function newMarker(map) {
         let marker = L.marker(xy(random(0, BOUND_X), random(0, BOUND_Y)));
         marker.on('click', () => {
-            marker.removeFrom(newMap);
+            marker.removeFrom(map);
+            remainingMarkers--;
+            if (remainingMarkers == 0) {
+                setArea('worldMap');
+            }
         })
-        marker.addTo(newMap);
-        return newMap;
+        marker.addTo(map);
     }
 
     function makeMapContainer(isCenter = false) {
@@ -64,13 +74,17 @@ function area_together() {
         newDiv.class('mediumMap');
     }
 
-    function makePolygon(x, y, size, points) {
+    function makePolygon(x, y, size, points, color, fillColor) {
         let positions = [];
         for (let point = 0; point < points; point++) {
             let theta = map(point, 0, points, 0, TWO_PI);
             positions.push(xy(cos(theta) * size + x, sin(theta) * size + y));
         }
-        poly = L.polygon(positions, { color: 'red', fillColor: '#f03', interactive: false });
+        poly = L.polygon(positions, {
+            color: color,
+            fillColor: fillColor,
+            interactive: false
+        });
         return poly;
     }
 

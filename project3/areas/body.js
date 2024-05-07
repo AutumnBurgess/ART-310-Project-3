@@ -89,7 +89,7 @@ function area_body() {
 
     function makeHeartMarker(final = false) {
         let marker = L.marker(xy(heartX, heartY - 4));
-        if (final) marker.bindPopup(`<button onclick="setArea('worldMap')">escape</button>`);
+        if (final) marker.bindPopup(`<button onclick="setArea('worldMap')">love</button>`);
         else marker.bindPopup(`<button onclick="f('love')">love</button>`);
         return marker;
     }

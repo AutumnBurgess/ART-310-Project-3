@@ -18,7 +18,6 @@ function area_a_lot() {
 
         let bounds = [[0, 0], [BOUND_X, BOUND_Y]];
         map.setView([BOUND_X / 2, BOUND_Y / 2], 2);
-        map.setMaxBounds(bounds);
 
         for (let i = 0; i < 2000; i++) {
             randomMarker();
@@ -35,15 +34,15 @@ function area_a_lot() {
                     autoClose: false,
                     closeOnClick: false
                 });
-                if (closed < 10) {
-                    popup.setContent('...');
+                if (closed < 12) {
+                    popup.setContent('.'.repeat(random(3, 15)));
                     popup.on('remove', () => {
                         marker.removeFrom(map);
                         popupOpen = false;
                         closed++;
                     });
                 } else {
-                    popup.setContent('oh');
+                    popup.setContent('.'.repeat(500));
                     popup.on('remove', () => {
                         setArea('worldMap');
                     });
